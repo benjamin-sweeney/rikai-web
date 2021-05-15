@@ -18,7 +18,7 @@ const Register: React.FC<registerProps> = ({}) => {
         initialValues={{ username: "", password: "" }}
         onSubmit={async (values, { setErrors }) => {
           const response = await register({
-            variables: { username: values.username, password: values.password },
+            variables: { options: values },
           });
           if (response.data?.register.errors) {
             setErrors(toErrorMap(response.data.register.errors));
