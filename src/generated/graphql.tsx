@@ -69,8 +69,7 @@ export type MutationRegisterArgs = {
 
 
 export type MutationLoginArgs = {
-  password: Scalars['String'];
-  userName: Scalars['String'];
+  options: UsernamePasswordInput;
 };
 
 export type Query = {
@@ -105,8 +104,7 @@ export type UsernamePasswordInput = {
 };
 
 export type LoginMutationVariables = Exact<{
-  username: Scalars['String'];
-  password: Scalars['String'];
+  options: UsernamePasswordInput;
 }>;
 
 
@@ -125,8 +123,7 @@ export type LoginMutation = (
 );
 
 export type RegisterMutationVariables = Exact<{
-  username: Scalars['String'];
-  password: Scalars['String'];
+  options: UsernamePasswordInput;
 }>;
 
 
@@ -146,8 +143,8 @@ export type RegisterMutation = (
 
 
 export const LoginDocument = gql`
-    mutation Login($username: String!, $password: String!) {
-  login(userName: $username, password: $password) {
+    mutation Login($options: UsernamePasswordInput!) {
+  login(options: $options) {
     user {
       id
       username
@@ -174,8 +171,7 @@ export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutati
  * @example
  * const [loginMutation, { data, loading, error }] = useLoginMutation({
  *   variables: {
- *      username: // value for 'username'
- *      password: // value for 'password'
+ *      options: // value for 'options'
  *   },
  * });
  */
@@ -187,8 +183,8 @@ export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
 export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
 export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
 export const RegisterDocument = gql`
-    mutation Register($username: String!, $password: String!) {
-  register(options: {username: $username, password: $password}) {
+    mutation Register($options: UsernamePasswordInput!) {
+  register(options: $options) {
     user {
       id
       username
@@ -215,8 +211,7 @@ export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, Regis
  * @example
  * const [registerMutation, { data, loading, error }] = useRegisterMutation({
  *   variables: {
- *      username: // value for 'username'
- *      password: // value for 'password'
+ *      options: // value for 'options'
  *   },
  * });
  */
