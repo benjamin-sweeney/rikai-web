@@ -65,6 +65,11 @@ export const Navigation: React.FC<NavigationProps> = ({}) => {
                   <Link mr={2}>Home</Link>
                 </NextLink>
               </li>
+              <li>
+                <NextLink href="/hiragana">
+                  <Link mr={2}>Hiragana</Link>
+                </NextLink>
+              </li>
             </Flex>
           </List>
         </nav>

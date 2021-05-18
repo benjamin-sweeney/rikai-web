@@ -149,6 +149,17 @@ export type RegisterMutation = (
   ) }
 );
 
+export type CharactersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CharactersQuery = (
+  { __typename?: 'Query' }
+  & { characters: Array<(
+    { __typename?: 'Character' }
+    & Pick<Character, 'id' | 'romaji' | 'text' | 'type'>
+  )> }
+);
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -271,6 +282,43 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const CharactersDocument = gql`
+    query Characters {
+  characters {
+    id
+    romaji
+    text
+    type
+  }
+}
+    `;
+
+/**
+ * __useCharactersQuery__
+ *
+ * To run a query within a React component, call `useCharactersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCharactersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCharactersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCharactersQuery(baseOptions?: Apollo.QueryHookOptions<CharactersQuery, CharactersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CharactersQuery, CharactersQueryVariables>(CharactersDocument, options);
+      }
+export function useCharactersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CharactersQuery, CharactersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CharactersQuery, CharactersQueryVariables>(CharactersDocument, options);
+        }
+export type CharactersQueryHookResult = ReturnType<typeof useCharactersQuery>;
+export type CharactersLazyQueryHookResult = ReturnType<typeof useCharactersLazyQuery>;
+export type CharactersQueryResult = Apollo.QueryResult<CharactersQuery, CharactersQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {
