@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import { InputField } from "../components/InputField";
 import { Wrapper } from "../components/Wrapper";
-import { useLoginMutation } from "../generated/graphql";
+import { MeDocument, MeQuery, useLoginMutation } from "../generated/graphql";
 import { toErrorMap } from "../utils/toErrorMap";
 
 interface loginProps {}
@@ -19,6 +19,15 @@ const Login: React.FC<loginProps> = ({}) => {
         onSubmit={async (values, { setErrors }) => {
           const response = await login({
             variables: { options: values },
+            update: (cache, { data }) => {
+              cache.writeQuery<MeQuery>({
+                query: MeDocument,
+                data: {
+                  __typename: "Query",
+                  me: data?.login.user,
+                },
+              });
+            },
           });
           if (response.data?.login.errors) {
             setErrors(toErrorMap(response.data.login.errors));
