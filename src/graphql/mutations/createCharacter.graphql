@@ -1,0 +1,14 @@
+mutation CreateCharacter($input: CharacterInput!) {
+  createCharacter(input: $input) {
+    id
+    romaji
+    text
+    type
+    createdAt
+    updatedAt
+    # errors {
+    #   field
+    #   message
+    # }
+  }
+}

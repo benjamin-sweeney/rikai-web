@@ -1,4 +1,6 @@
 import { Box, Flex } from "@chakra-ui/layout";
+import { Button } from "@chakra-ui/react";
+import NextLink from "next/link";
 import React from "react";
 import { Layout } from "../components/Layout";
 import { useCharactersQuery } from "../generated/graphql";
@@ -21,6 +23,13 @@ const hiragana: React.FC<hiraganaProps> = ({}) => {
             </Box>
           </Flex>
         ))}
+      </Flex>
+      <Flex justifyContent="center">
+        <NextLink href="/create/character">
+          <Button mt={2} variant="solid" size="sm" colorScheme="teal">
+            new
+          </Button>
+        </NextLink>
       </Flex>
     </Layout>
   );

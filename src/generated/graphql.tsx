@@ -14,6 +14,21 @@ export type Scalars = {
   Float: number;
 };
 
+export type Card = {
+  __typename?: 'Card';
+  id: Scalars['Float'];
+  characterId: Scalars['Float'];
+  character: Character;
+  questionType: Scalars['String'];
+  answerType: Scalars['String'];
+};
+
+export type CardInput = {
+  characterId: Scalars['Float'];
+  questionType: Scalars['String'];
+  answerType: Scalars['String'];
+};
+
 export type Character = {
   __typename?: 'Character';
   id: Scalars['Float'];
@@ -44,6 +59,7 @@ export type Mutation = {
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
+  createCard?: Maybe<Card>;
 };
 
 
@@ -72,15 +88,27 @@ export type MutationLoginArgs = {
   options: UsernamePasswordInput;
 };
 
+
+export type MutationCreateCardArgs = {
+  input: CardInput;
+};
+
 export type Query = {
   __typename?: 'Query';
   characters: Array<Character>;
   character?: Maybe<Character>;
   me?: Maybe<User>;
+  card?: Maybe<Card>;
+  cards: Array<Card>;
 };
 
 
 export type QueryCharacterArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type QueryCardArgs = {
   id: Scalars['Int'];
 };
 
@@ -102,6 +130,19 @@ export type UsernamePasswordInput = {
   username: Scalars['String'];
   password: Scalars['String'];
 };
+
+export type CreateCharacterMutationVariables = Exact<{
+  input: CharacterInput;
+}>;
+
+
+export type CreateCharacterMutation = (
+  { __typename?: 'Mutation' }
+  & { createCharacter: (
+    { __typename?: 'Character' }
+    & Pick<Character, 'id' | 'romaji' | 'text' | 'type' | 'createdAt' | 'updatedAt'>
+  ) }
+);
 
 export type LoginMutationVariables = Exact<{
   options: UsernamePasswordInput;
@@ -172,6 +213,44 @@ export type MeQuery = (
 );
 
 
+export const CreateCharacterDocument = gql`
+    mutation CreateCharacter($input: CharacterInput!) {
+  createCharacter(input: $input) {
+    id
+    romaji
+    text
+    type
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export type CreateCharacterMutationFn = Apollo.MutationFunction<CreateCharacterMutation, CreateCharacterMutationVariables>;
+
+/**
+ * __useCreateCharacterMutation__
+ *
+ * To run a mutation, you first call `useCreateCharacterMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCharacterMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCharacterMutation, { data, loading, error }] = useCreateCharacterMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateCharacterMutation(baseOptions?: Apollo.MutationHookOptions<CreateCharacterMutation, CreateCharacterMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateCharacterMutation, CreateCharacterMutationVariables>(CreateCharacterDocument, options);
+      }
+export type CreateCharacterMutationHookResult = ReturnType<typeof useCreateCharacterMutation>;
+export type CreateCharacterMutationResult = Apollo.MutationResult<CreateCharacterMutation>;
+export type CreateCharacterMutationOptions = Apollo.BaseMutationOptions<CreateCharacterMutation, CreateCharacterMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($options: UsernamePasswordInput!) {
   login(options: $options) {
